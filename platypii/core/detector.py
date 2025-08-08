@@ -3,13 +3,11 @@ from typing import List, Dict, Any
 from platypii.utils import PIIMatch, TextProcessor, merge_overlapping_matches
 from platypii.config import DEFAULT_CONFIG
 from platypii.detectors import NLPDetector, RegexDetector
-from platypii.processors import Preprocessor
 
 class PIIDetector:    
     def __init__(self, config=None):
         self.config = config if config else DEFAULT_CONFIG
         self.text_processor = TextProcessor()
-        self.pre_processor = Preprocessor()
         self.regex_detector = RegexDetector()
         self.nlp_detector = NLPDetector()
     
@@ -17,11 +15,9 @@ class PIIDetector:
         if not text or len(text.strip()) == 0:
             return []
         
-        cleaned_text = self.pre_processor.quick_clean(text)
-
         matches = []
-        matches.extend(self.regex_detector.detect(cleaned_text))
-        matches.extend(self.nlp_detector.detect(cleaned_text))
+        matches.extend(self.regex_detector.detect(text))
+        matches.extend(self.nlp_detector.detect(text))
         
         filtered_matches = merge_overlapping_matches(matches)
         

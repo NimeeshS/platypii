@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 from .detector import PIIDetector
 from platypii.processors import Anonymizer
-from platypii.processors import Postprocessor
+from platypii.processors import Preprocessor, Postprocessor
 from platypii.outputs import ReportFormatter
 from platypii.utils import PIIMatch
 from platypii.config import DEFAULT_CONFIG
@@ -18,6 +18,7 @@ class PIIEngine:
         self.anonymizer = None
         self.formatter = None
         self.last_results = None
+        self.pre_processor = Preprocessor()
         self.post_processor = Postprocessor()
         
         logger.info("PII Engine initialized")
@@ -40,6 +41,8 @@ class PIIEngine:
         
         logger.info(f"Processing text of length {len(text)}")
         
+        text = self.pre_processor.quick_clean(text)
+
         matches = self.detector.detect(text)
         logger.info(f"Found {len(matches)} PII matches")
         

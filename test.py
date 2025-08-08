@@ -14,15 +14,18 @@ def test_basic_functionality():
     """Test basic PII detection and anonymization"""
     print("=== Testing PlatyPII Basic Functionality ===\n")
     
-    try:        
+    try:
+        # Import main functions
         from __init__ import detect_pii, mask_pii
         from platypii.core.engine import PIIEngine
-
+        
         # Test data with various PII types
         test_text = """
-        Hi, my name is Nimeesh Sharma and you can reach me at sharma.nimeesh@gmail.com 
-        or call me at 6099088214. My SSN is 123-45-6789 and I live at 
-        27 Linden Lane. I was born on 01/15/1985.
+
+
+        Hi, my name is Nimeesh Sharma and you can reach me at jsharma.nimeesh@gmail.com 
+        or call me at 555-123-4567. My SSN is 123-45-6789 and I live at 
+        27 Linden Lane. I was born on 09/17/2007.
         """
         
         print("Original text:")
@@ -33,7 +36,7 @@ def test_basic_functionality():
         print("1. Basic PII Detection:")
         matches = detect_pii(test_text)
         for match in matches:
-            print(f"  - {match.pii_type}: '{match.value}' (confidence: {match.confidence:.2f})")
+            print(f"  - {match.pii_type}: '{match.value}' (detector: {match.detector_name}) (confidence: {match.confidence:.2f})")
         print(f"\nFound {len(matches)} PII matches\n")
         
         # Test 2: Basic masking
@@ -55,7 +58,7 @@ def test_basic_functionality():
                 # You'll need to update the engine call based on your implementation
                 result = engine.process_text(test_text, anonymize=True, method=method)
                 if 'anonymized_text' in result:
-                    print(result['anonymized_text'][:200] + "..." if len(result['anonymized_text']) > 200 else result['anonymized_text'])
+                    print(result['anonymized_text'])
                 else:
                     print("Anonymization not available in result")
             except Exception as e:

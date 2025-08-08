@@ -39,7 +39,7 @@ class Anonymizer:
         for match in sorted_matches:
             anonymized_value = self._anonymize_value(match, anonymization_method)
             anonymized_text = (anonymized_text[:match.start] + anonymized_value + anonymized_text[match.end:])
-        
+
         return anonymized_text
     
     def _anonymize_value(self, match: PIIMatch, method: str) -> str:
@@ -49,7 +49,7 @@ class Anonymizer:
         if method == 'mask':
             return self._mask_value(original_value, pii_type)
         elif method == 'redact':
-            return self._redact_value(original_value, pii_type)
+            return self._redact_value()
         elif method == 'hash':
             return self._hash_value(original_value, pii_type)
         elif method == 'replace':
@@ -68,7 +68,7 @@ class Anonymizer:
             for char in value:
                 if char.isspace():
                     masked += char
-                elif char in '.-()':
+                elif char in '-()/@':
                     masked += char
                 else:
                     masked += self.mask_char
@@ -100,7 +100,7 @@ class Anonymizer:
         
         return self._mask_value(value, pii_type)
     
-    def _redact_value(self, value: str, pii_type: str) -> str:
+    def _redact_value(self) -> str:
         return '[REDACTED]'
     
     def _hash_value(self, value: str, pii_type: str) -> str:
