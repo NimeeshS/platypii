@@ -12,8 +12,9 @@ __version__ = "0.1.0"
 __description__ = "A comprehensive PII detection and redaction library"
 
 # Import main classes for easy access
-from .core.detector import PIIDetector
-from .core.engine import PIIEngine
+from platypii.core import PIIDetector
+from platypii.core import PIIEngine
+from platypii.core import PIIEngine
 from .processors.anonymizer import Anonymizer
 from .outputs.formatters import ReportFormatter
 
