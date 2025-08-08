@@ -1,11 +1,11 @@
 import re
 from typing import List, Optional
 import spacy
-from ...utils import PIIMatch
+from ...utils import PIIMatch, DEFAULT_CONFIG
 
 class NLPDetector:    
     def __init__(self, config=None, model_name="en_core_web_sm"):
-        self.config = config
+        self.config = config if config else DEFAULT_CONFIG
         self.model_name = model_name
         self.nlp = None
         try:

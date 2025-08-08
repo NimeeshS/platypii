@@ -2,6 +2,7 @@ from typing import List, Dict, Any, Callable
 from dataclasses import dataclass
 import time
 import logging
+from ...utils import DEFAULT_CONFIG
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +15,7 @@ class PipelineStep:
 
 class PIIPipeline:
     def __init__(self, config=None):
-        self.config = config
+        self.config = config if config else DEFAULT_CONFIG
         self.steps = []
         self.results = {}
         self.timing = {}

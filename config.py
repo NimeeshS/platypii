@@ -1,11 +1,3 @@
-"""
-Configuration management for PlatyPII.
-
-This module handles loading and managing configuration settings
-for PII detection, masking, and reporting.
-"""
-
-import os
 import yaml
 from typing import Dict, Any, Optional
 from pathlib import Path

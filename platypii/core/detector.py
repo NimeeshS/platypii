@@ -3,12 +3,7 @@ from typing import List, Dict, Any
 from ...utils import PIIMatch, TextProcessor, merge_overlapping_matches
 from ...config import DEFAULT_CONFIG
 
-class PIIDetector:
-    """
-    The main detector class that finds PII in text
-    Uses regex patterns mostly because they work pretty well
-    """
-    
+class PIIDetector:    
     def __init__(self, config=None):
         self.config = config if config else DEFAULT_CONFIG
         self.text_processor = TextProcessor()

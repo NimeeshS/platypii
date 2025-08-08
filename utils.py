@@ -7,7 +7,7 @@ This module contains helper functions used throughout the library.
 import re
 import hashlib
 import logging
-from typing import List, Dict, Any, Tuple, Optional, Union
+from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -256,7 +256,7 @@ class HashGenerator:
             "phone": "XXX-XXX-XXXX" if "-" in original else "XXXXXXXXXX", 
             "credit_card": "XXXX-XXXX-XXXX-XXXX" if "-" in original else "XXXXXXXXXXXXXXXX",
             "email": "user@domain.com",
-            "date_of_birth": "XX/XX/XXXX" if "/" in original else "XXXXXXXX"
+            "date": "XX/XX/XXXX" if "/" in original else "XXXXXXXX"
         }
         
         return format_map.get(pii_type, f"[{pii_type.upper()}]")

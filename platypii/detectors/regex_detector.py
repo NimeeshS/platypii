@@ -1,10 +1,10 @@
 import re
 from typing import List, Dict
-from ...utils import PIIMatch, Validator
+from ...utils import PIIMatch, Validator, DEFAULT_CONFIG
 
 class RegexDetector:    
     def __init__(self, config=None):
-        self.config = config
+        self.config = config if config else DEFAULT_CONFIG
         self.validator = Validator()
         
         self.patterns = {
