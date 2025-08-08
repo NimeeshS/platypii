@@ -1,6 +1,7 @@
 import re
 from typing import List, Dict, Any, Tuple
-from ...utils import PIIMatch, DEFAULT_CONFIG
+from platypii.utils import PIIMatch
+from platypii.config import DEFAULT_CONFIG
 
 class Postprocessor:
     """

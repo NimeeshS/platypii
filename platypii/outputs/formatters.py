@@ -1,11 +1,12 @@
 import json
 from typing import List, Dict, Any
 from datetime import datetime
-from ...utils import PIIMatch
+from platypii.utils import PIIMatch
+from platypii.config import DEFAULT_CONFIG
 
 class ReportFormatter:
     def __init__(self, config=None):
-        self.config = config
+        self.config = config if config else DEFAULT_CONFIG
         
         self.report_settings = {
             'include_confidence': True,

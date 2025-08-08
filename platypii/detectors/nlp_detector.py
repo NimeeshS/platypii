@@ -1,7 +1,8 @@
 import re
 from typing import List, Optional
 import spacy
-from ...utils import PIIMatch, DEFAULT_CONFIG
+from platypii.utils import PIIMatch
+from platypii.config import DEFAULT_CONFIG
 
 class NLPDetector:    
     def __init__(self, config=None, model_name="en_core_web_sm"):
@@ -39,9 +40,6 @@ class NLPDetector:
         if self.nlp:
             spacy_matches = self._detect_with_spacy(text)
             matches.extend(spacy_matches)
-        
-        context_matches = self._detect_contextual_pii(text)
-        matches.extend(context_matches)
         
         return matches
     
@@ -117,7 +115,7 @@ class NLPDetector:
         
         name_sequence = " ".join(name_tokens)
         
-        if 4 <= len(name_sequence) <= 50 and not self._is_common_phrase(name_sequence):
+        if 4 <= len(name_sequence) <= 50:
             return name_sequence
         
         return None
@@ -182,8 +180,7 @@ class NLPDetector:
         text = ent.text.strip()
         
         if pii_type == 'name':
-            return (2 <= len(text) <= 50 and 
-                   not self._is_common_phrase(text) and len(text.split()) <= 4)
+            return (2 <= len(text) <= 50 and len(text.split()) <= 4)
         
         elif pii_type == 'date':
             return len(text) >= 4 and any(char.isdigit() for char in text)

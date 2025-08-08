@@ -38,31 +38,7 @@ class PIIMatch:
             "length": self.end - self.start
         }
 
-class TextProcessor:
-    """Text processing utilities."""
-    
-    @staticmethod
-    def clean_text(text: str) -> str:
-        """
-        Clean and normalize text for processing.
-        
-        Args:
-            text (str): Input text
-            
-        Returns:
-            str: Cleaned text
-        """
-        if not text:
-            return ""
-        
-        # Normalize whitespace
-        text = re.sub(r'\s+', ' ', text.strip())
-        
-        # Remove common non-printable characters
-        text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]', '', text)
-        
-        return text
-    
+class TextProcessor:    
     @staticmethod
     def extract_context(text: str, start: int, end: int, window: int = 50) -> str:
         """
@@ -89,21 +65,6 @@ class TextProcessor:
             context = context + "..."
             
         return context
-    
-    @staticmethod
-    def tokenize_simple(text: str) -> List[str]:
-        """
-        Simple tokenization for text processing.
-        
-        Args:
-            text (str): Input text
-            
-        Returns:
-            List[str]: List of tokens
-        """
-        # Split on whitespace and punctuation
-        tokens = re.findall(r'\b\w+\b', text.lower())
-        return tokens
 
 class Validator:
     """Validation utilities for PII patterns."""

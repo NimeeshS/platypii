@@ -1,15 +1,15 @@
 import json
 import os
 from typing import List, Dict, Any
-from datetime import datetime
 from pathlib import Path
-from ...utils import PIIMatch
+from platypii.utils import PIIMatch
+from platypii.config import DEFAULT_CONFIG
 from .formatters import ReportFormatter
 
 class DataExporter:    
     def __init__(self, config=None):
-        self.config = config
-        self.formatter = ReportFormatter(config)
+        self.config = config if config else DEFAULT_CONFIG
+        self.formatter = ReportFormatter()
         
         self.export_settings = {
             'default_format': 'json',

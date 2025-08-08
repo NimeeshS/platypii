@@ -1,9 +1,10 @@
 from typing import List, Dict, Any
 from .detector import PIIDetector
-from ..processors.anonymizer import Anonymizer
-from ..outputs.formatters import ReportFormatter
-from ...utils import PIIMatch
-from ...config import DEFAULT_CONFIG
+from platypii.processors import Anonymizer
+from platypii.processors import Postprocessor
+from platypii.outputs import ReportFormatter
+from platypii.utils import PIIMatch
+from platypii.config import DEFAULT_CONFIG
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -13,14 +14,15 @@ class PIIEngine:
     
     def __init__(self, config=None):
         self.config = config if config else DEFAULT_CONFIG
-        self.detector = PIIDetector(config=self.config)
+        self.detector = PIIDetector()
         self.anonymizer = None
         self.formatter = None
         self.last_results = None
+        self.post_processor = Postprocessor()
         
         logger.info("PII Engine initialized")
     
-    def process_text(self, text: str, anonymize: bool = False, generate_report: bool = True) -> Dict[str, Any]:
+    def process_text(self, text: str, anonymize: bool = False, method: str = None, generate_report: bool = True) -> Dict[str, Any]:
         """
         Main processing method
         
@@ -51,9 +53,9 @@ class PIIEngine:
         
         if anonymize and matches:
             if not self.anonymizer:
-                self.anonymizer = Anonymizer(config=self.config)
+                self.anonymizer = Anonymizer()
             
-            anonymized = self.anonymizer.anonymize_text(text, matches)
+            anonymized = self.anonymizer.anonymize_text(text, matches, method)
             result['anonymized_text'] = anonymized
             logger.info("Text anonymized")
         

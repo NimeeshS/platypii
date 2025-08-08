@@ -2,7 +2,7 @@ from typing import List, Dict, Any, Callable
 from dataclasses import dataclass
 import time
 import logging
-from ...utils import DEFAULT_CONFIG
+from platypii.config import DEFAULT_CONFIG
 
 logger = logging.getLogger(__name__)
 

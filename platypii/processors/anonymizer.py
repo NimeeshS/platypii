@@ -1,6 +1,7 @@
 import hashlib
-from typing import List, Dict, Any, Optional
-from ...utils import PIIMatch, DEFAULT_CONFIG
+from typing import List, Dict, Any
+from platypii.utils import PIIMatch
+from platypii.config import DEFAULT_CONFIG
 
 class Anonymizer:
     def __init__(self, config=None):
@@ -19,14 +20,17 @@ class Anonymizer:
             'address': '[ADDRESS]',
             'date': '[DATE]'
         })
+
+        self.anonymization_methods = ['mask', 'redact', 'hash', 'replace', 'synthetic']
         
         self.hash_salt = "platypii_salt_2024"
     
-    def anonymize_text(self, text: str, matches: List[PIIMatch], method: str = None) -> str:
+    def anonymize_text(self, text: str, matches: List[PIIMatch], anonymization_method: str = None) -> str:
         if not text or not matches:
             return text
         
-        anonymization_method = method or self.default_method
+        if not anonymization_method or anonymization_method not in self.anonymization_methods:
+            anonymization_method = self.default_method
         
         sorted_matches = sorted(matches, key=lambda m: m.start, reverse=True)
         
@@ -134,6 +138,9 @@ class Anonymizer:
         
         elif pii_type == 'address':
             return "123 Main Street"
+        
+        elif pii_type == 'date':
+            return '01/01/1970'
         
         else:
             return self._replace_value(value, pii_type)

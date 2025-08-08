@@ -1,6 +1,7 @@
 import re
 from typing import List, Dict
-from ...utils import PIIMatch, Validator, DEFAULT_CONFIG
+from platypii.utils import PIIMatch, Validator
+from platypii.config import DEFAULT_CONFIG
 
 class RegexDetector:    
     def __init__(self, config=None):

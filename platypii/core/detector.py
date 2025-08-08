@@ -1,65 +1,27 @@
 import re
 from typing import List, Dict, Any
-from ...utils import PIIMatch, TextProcessor, merge_overlapping_matches
-from ...config import DEFAULT_CONFIG
+from platypii.utils import PIIMatch, TextProcessor, merge_overlapping_matches
+from platypii.config import DEFAULT_CONFIG
+from platypii.detectors import NLPDetector, RegexDetector
+from platypii.processors import Preprocessor
 
 class PIIDetector:    
     def __init__(self, config=None):
         self.config = config if config else DEFAULT_CONFIG
         self.text_processor = TextProcessor()
-        
-        self.patterns = {
-            'email': r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b',
-            'phone': r'\b(?:\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}\b',
-            'ssn': r'\b\d{3}[-.]?\d{2}[-.]?\d{4}\b',
-            'credit_card': r'\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b',
-            'ip_address': r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b',
-        }
-        
-        self.confidence_scores = {
-            'email': 0.9,
-            'phone': 0.8, 
-            'ssn': 0.95,
-            'credit_card': 0.85,
-            'ip_address': 0.8,
-        }
+        self.pre_processor = Preprocessor()
+        self.regex_detector = RegexDetector()
+        self.nlp_detector = NLPDetector()
     
     def detect(self, text: str) -> List[PIIMatch]:
         if not text or len(text.strip()) == 0:
             return []
         
-        cleaned_text = self.text_processor.clean_text(text)
-        
+        cleaned_text = self.pre_processor.quick_clean(text)
+
         matches = []
-        
-        for pii_type, pattern in self.patterns.items():
-            if not self.config.get(f'pii_types.{pii_type}.enabled', True):
-                continue
-                
-            regex_matches = re.finditer(pattern, cleaned_text, re.IGNORECASE)
-            
-            for match in regex_matches:
-                if self._is_valid_match(pii_type, match.group()):
-                    confidence = self.confidence_scores.get(pii_type, 0.5)
-                    
-                    context = self.text_processor.extract_context(
-                        cleaned_text, 
-                        match.start(), 
-                        match.end(),
-                        window=self.config.get('detection.context_window', 50)
-                    )
-                    
-                    pii_match = PIIMatch(
-                        pii_type=pii_type,
-                        value=match.group(),
-                        start=match.start(),
-                        end=match.end(),
-                        confidence=confidence,
-                        context=context,
-                        detector_name="regex"
-                    )
-                    
-                    matches.append(pii_match)
+        matches.extend(self.regex_detector.detect(cleaned_text))
+        matches.extend(self.nlp_detector.detect(cleaned_text))
         
         filtered_matches = merge_overlapping_matches(matches)
         

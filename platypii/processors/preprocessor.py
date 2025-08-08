@@ -1,6 +1,6 @@
 import re
 from typing import Dict, Any
-from ...utils import DEFAULT_CONFIG
+from platypii.config import DEFAULT_CONFIG
 
 class Preprocessor:    
     def __init__(self, config=None):

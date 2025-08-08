@@ -15,8 +15,8 @@ __description__ = "A comprehensive PII detection and redaction library"
 from platypii.core import PIIDetector
 from platypii.core import PIIEngine
 from platypii.core import PIIEngine
-from .processors.anonymizer import Anonymizer
-from .outputs.formatters import ReportFormatter
+from platypii.processors import Anonymizer
+from platypii.outputs import ReportFormatter
 
 # Define what gets imported with "from platypii import *"
 __all__ = [
@@ -42,7 +42,7 @@ def detect_pii(text, config=None):
     detector = PIIDetector(config=config)
     return detector.detect(text)
 
-def mask_pii(text, mask_char="*", config=None):
+def mask_pii(text, config=None):
     """
     Quick PII masking function for simple use cases.
     
@@ -55,6 +55,6 @@ def mask_pii(text, mask_char="*", config=None):
         str: Text with PII masked
     """
     detector = PIIDetector(config=config)
-    anonymizer = Anonymizer(mask_char=mask_char)
+    anonymizer = Anonymizer()
     detections = detector.detect(text)
-    return anonymizer.mask(text, detections)
+    return anonymizer.anonymize_text(text, detections)
