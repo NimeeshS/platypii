@@ -26,7 +26,7 @@ class Config:
                     "regex",
                     "nlp"
                 ],
-                "confidence_threshold": 0.7,
+                "confidence_threshold": 0.6,
                 "case_sensitive": False,
                 "context_window": 50,  # Characters around detected PII
             },

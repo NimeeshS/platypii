@@ -21,7 +21,7 @@ class PIIDetector:
         
         filtered_matches = merge_overlapping_matches(matches)
         
-        threshold = self.config.get('detection.confidence_threshold', 0.7)
+        threshold = self.config.get('detection.confidence_threshold', 0.6)
         final_matches = [m for m in filtered_matches if m.confidence >= threshold]
         
         return final_matches

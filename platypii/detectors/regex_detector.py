@@ -34,11 +34,6 @@ class RegexDetector:
                 'confidence': 0.8,
                 'validate': True
             },
-            'name': {
-                'pattern': r'\b[A-Z][a-z]{1,15}\s+[A-Z][a-z]{1,15}\b',
-                'confidence': 0.6,
-                'validate': False
-            },
             'address': {
                 'pattern': r'\b\d+\s+[A-Za-z\s]+(?:Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Boulevard|Blvd|Apartment|Apt)\b',
                 'confidence': 0.7,
