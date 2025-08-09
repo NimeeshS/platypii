@@ -118,8 +118,6 @@ class Anonymizer:
             parts = value.split()
             if len(parts) == 2:
                 return "John Smith"
-            else:
-                return "Jane Doe"
         
         elif pii_type == 'email':
             return f"user@domain.com"

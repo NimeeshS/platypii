@@ -8,8 +8,8 @@ class PIIDetector:
     def __init__(self, config=None):
         self.config = config if config else DEFAULT_CONFIG
         self.text_processor = TextProcessor()
-        self.regex_detector = RegexDetector()
-        self.nlp_detector = NLPDetector()
+        self.regex_detector = RegexDetector(config)
+        self.nlp_detector = NLPDetector(config)
     
     def detect(self, text: str) -> List[PIIMatch]:
         if not text or len(text.strip()) == 0:

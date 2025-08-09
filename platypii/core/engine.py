@@ -14,12 +14,12 @@ class PIIEngine:
     
     def __init__(self, config=None):
         self.config = config if config else DEFAULT_CONFIG
-        self.detector = PIIDetector()
+        self.detector = PIIDetector(config)
         self.anonymizer = None
         self.formatter = None
         self.last_results = None
-        self.pre_processor = Preprocessor()
-        self.post_processor = Postprocessor()
+        self.pre_processor = Preprocessor(config)
+        self.post_processor = Postprocessor(config)
         
         logger.info("PII Engine initialized")
     
@@ -30,6 +30,7 @@ class PIIEngine:
         Args:
             text: The text to process
             anonymize: Whether to anonymize the PII
+            method: mask, redact, hash, replace, synthetic
             generate_report: Whether to create a report
             
         Returns:
@@ -138,16 +139,6 @@ class PIIEngine:
             exportable = self.last_results.copy()
             exportable['matches'] = [match.to_dict() for match in exportable['matches']]
             return json.dumps(exportable, indent=2)
-        
-        elif format_type.lower() == 'csv':
-            if not self.last_results['matches']:
-                return "No PII found"
-            
-            lines = ["pii_type,value,start,end,confidence"]
-            for match in self.last_results['matches']:
-                lines.append(f"{match.pii_type},{match.value},{match.start},{match.end},{match.confidence}")
-            
-            return "\n".join(lines)
         
         else:
             logger.warning(f"Unsupported export format: {format_type}")
