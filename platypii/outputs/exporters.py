@@ -10,6 +10,7 @@ class DataExporter:
         self.config = config if config else DEFAULT_CONFIG
         self.formatter = ReportFormatter()
         
+        
         self.export_settings = {
             'default_format': 'json',
             'include_timestamp': True,
@@ -63,7 +64,7 @@ class DataExporter:
             '.json': 'json',
             '.html': 'html',
             '.htm': 'html',
-            '.txt': 'text',
+            '.txt': 'txt',
         }
         
         return format_map.get(extension, self.export_settings['default_format'])

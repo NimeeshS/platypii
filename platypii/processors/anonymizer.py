@@ -38,7 +38,8 @@ class Anonymizer:
         
         for match in sorted_matches:
             anonymized_value = self._anonymize_value(match, anonymization_method)
-            anonymized_text = (anonymized_text[:match.start] + anonymized_value + anonymized_text[match.end:])
+            if anonymized_value:
+                anonymized_text = (anonymized_text[:match.start] + anonymized_value + anonymized_text[match.end:])
 
         return anonymized_text
     

@@ -6,6 +6,7 @@ from platypii.outputs import ReportFormatter
 from platypii.utils import PIIMatch
 from platypii.config import DEFAULT_CONFIG
 import logging
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -86,11 +87,40 @@ class PIIEngine:
             results.append(result)
         
         return results
-    
+
+    def process_file(self, file_path: str, anonymize: bool = False, method: str = None, generate_report: bool = True) -> Dict[str, Any]:
+        """
+        Process text directly from a file.
+
+        Args:
+            file_path: Path to the text file to process
+            anonymize: Whether to anonymize the PII
+            method: mask, redact, hash, replace, synthetic
+            generate_report: Whether to create a report
+
+        Returns:
+            Dictionary with all the results
+        """
+        if not os.path.exists(file_path):
+            logger.error(f"File not found: {file_path}")
+            return self._empty_result()
+
+        with open(file_path, "r", encoding="utf-8") as f:
+            text = f.read()
+
+        logger.info(f"Loaded text file: {file_path} ({len(text)} characters)")
+
+        return self.process_text(
+            text=text,
+            anonymize=anonymize,
+            method=method,
+            generate_report=generate_report
+        )
+
     def detect_only(self, text: str) -> List[PIIMatch]:
         return self.detector.detect(text)
     
-    def anonymize_only(self, text: str) -> str:
+    def anonymize_only(self, text: str, anonymization_method: str = None) -> str:
         matches = self.detector.detect(text)
         if not matches:
             return text
@@ -98,7 +128,7 @@ class PIIEngine:
         if not self.anonymizer:
             self.anonymizer = Anonymizer(config=self.config)
         
-        return self.anonymizer.anonymize_text(text, matches)
+        return self.anonymizer.anonymize_text(text, matches, anonymization_method)
     
     def _empty_result(self) -> Dict[str, Any]:
         return {
