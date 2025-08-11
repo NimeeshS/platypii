@@ -20,7 +20,6 @@ class Config:
     def _load_default_config(self) -> Dict[str, Any]:
         """Load default configuration settings."""
         return {
-            # Detection settings
             "detection": {
                 "enabled_detectors": [
                     "regex",
@@ -28,10 +27,9 @@ class Config:
                 ],
                 "confidence_threshold": 0.4,
                 "case_sensitive": False,
-                "context_window": 50,  # Characters around detected PII
+                "context_window": 50,
             },
             
-            # PII types to detect
             "pii_types": {
                 "email": {"enabled": True, "confidence": 0.9},
                 "phone": {"enabled": True, "confidence": 0.8},
@@ -41,8 +39,6 @@ class Config:
                 "name": {"enabled": True, "confidence": 0.7},
                 "address": {"enabled": True, "confidence": 0.6},
                 "date": {"enabled": True, "confidence": 0.8},
-                "passport": {"enabled": False, "confidence": 0.9},
-                "license_plate": {"enabled": False, "confidence": 0.8},
             },
             
             # Masking/anonymization settings
@@ -115,7 +111,6 @@ class Config:
             with open(config_path, 'r', encoding='utf-8') as f:
                 custom_config = yaml.safe_load(f)
             
-            # Deep merge custom config with defaults
             self.config = self._deep_merge(self.config, custom_config)
             
         except yaml.YAMLError as e:
@@ -202,5 +197,4 @@ class Config:
         """Return configuration as dictionary."""
         return self.config.copy()
 
-# Global default configuration instance
 DEFAULT_CONFIG = Config()

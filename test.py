@@ -23,9 +23,9 @@ def test_basic_functionality():
         test_text = """
 
 
-        Hi, my name is Nimeesh Sharma and you can reach me at jsharma.nimeesh@gmail.com 
+        Hi, my name is John Smith and you can reach me at johnsmith@gmail.com 
         or call me at 555-123-4567. My SSN is 123-45-6789 and I live at 
-        27 Linden Lane. I was born on 09/17/2007.
+        123 Main Road. I was born on 12/31/2024.
         """
         
         print("Original text:")
