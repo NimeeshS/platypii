@@ -12,19 +12,23 @@ __version__ = "0.1.0"
 __description__ = "A comprehensive PII detection and redaction library"
 
 # Import main classes for easy access
-from platypii.core import PIIDetector
-from platypii.core import PIIEngine
-from platypii.core import PIIEngine
-from platypii.processors import Anonymizer
-from platypii.outputs import ReportFormatter
+from platypii.core import PIIDetector, PIIEngine, PIIPipeline
+from platypii.detectors import RegexDetector, NLPDetector
+from platypii.outputs import DataExporter, ReportFormatter
+from platypii.processors import Anonymizer, Preprocessor, Postprocessor
 
-# Define what gets imported with "from platypii import *"
-__all__ = [
+_all__ = [
     "PIIDetector",
-    "PIIEngine", 
-    "Anonymizer",
+    "PIIEngine",
+    "PIIPipeline",
+    "RegexDetector",
+    "NLPDetector",
+    "DataExporter",
     "ReportFormatter",
-    "__version__",
+    "Anonymizer",
+    "PreProcessor",
+    "PostProcessor"
+    "__version__"
 ]
 
 # Convenience function for quick detection
