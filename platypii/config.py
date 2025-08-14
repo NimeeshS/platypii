@@ -45,6 +45,8 @@ class Config:
             "anonymization": {
                 "default_strategy": "mask",  # mask, redact, replace, hash
                 "mask_character": "*",
+                "hash_salt": None,
+                "redact_value": "[REDACTED]",
                 "preserve_length": True,
                 "preserve_format": False,  # Keep structure like XXX-XX-XXXX for SSN
                 "replacement_patterns": {

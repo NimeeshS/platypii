@@ -17,7 +17,8 @@ def test_basic_functionality():
     try:
         # Import main functions
         from __init__ import detect_pii, mask_pii
-        from platypii.core.engine import PIIEngine
+        from platypii import PIIEngine
+        from platypii.config import DEFAULT_CONFIG
         
         # Test data with various PII types
         test_text = """
@@ -51,6 +52,7 @@ def test_basic_functionality():
         
         # Test different anonymization methods
         methods = ['mask', 'redact', 'hash', 'replace', 'synthetic']
+        DEFAULT_CONFIG.set("anonymization.hash_salt", "platypii_hash")
         
         for method in methods:
             print(f"\n--- {method.upper()} method ---")

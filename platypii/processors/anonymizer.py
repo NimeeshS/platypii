@@ -23,7 +23,8 @@ class Anonymizer:
 
         self.anonymization_methods = ['mask', 'redact', 'hash', 'replace', 'synthetic']
         
-        self.hash_salt = "platypii_salt_2024"
+        self.redact_value = self.config.get('anonymization.redact_value', '[REDACTED]')
+        self.hash_salt = self.config.get('anonymization.hash_salt', None)
     
     def anonymize_text(self, text: str, matches: List[PIIMatch], anonymization_method: str = None) -> str:
         if not text or not matches:
@@ -102,14 +103,17 @@ class Anonymizer:
         return self._mask_value(value, pii_type)
     
     def _redact_value(self) -> str:
-        return '[REDACTED]'
+        return self.redact_value
     
     def _hash_value(self, value: str, pii_type: str) -> str:
-        hash_input = (value + self.hash_salt).encode('utf-8')
-        hash_object = hashlib.sha256(hash_input)
-        hash_hex = hash_object.hexdigest()
-        
-        return f"[HASH:{hash_hex[:8]}]"
+        if self.hash_salt:
+            hash_input = (value + self.hash_salt).encode('utf-8')
+            hash_object = hashlib.sha256(hash_input)
+            hash_hex = hash_object.hexdigest()
+            
+            return f"[HASH:{hash_hex[:8]}]"
+        else:
+            raise AttributeError("Could not find hash value. Please set hash value in config.")
     
     def _replace_value(self, value: str, pii_type: str) -> str:
         return self.replacement_patterns.get(pii_type, value)
