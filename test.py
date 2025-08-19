@@ -57,7 +57,6 @@ def test_basic_functionality():
         for method in methods:
             print(f"\n--- {method.upper()} method ---")
             try:
-                # You'll need to update the engine call based on your implementation
                 result = engine.process_text(test_text, anonymize=True, method=method)
                 if 'anonymized_text' in result:
                     print(result['anonymized_text'])
